@@ -1,3 +1,5 @@
+const BRUSH_TIME = 1500;
+
 const activeToolEl = document.getElementById('active-tool');
 const brushColorBtn = document.getElementById('brush-color');
 const brushIcon = document.getElementById('brush');
@@ -48,7 +50,7 @@ bucketColorBtn.addEventListener('change', () => {
     restoreCanvas();
 });
 
-// // Eraser
+// Eraser
 eraser.addEventListener('click', () => {
     isEraser = true;
     brushIcon.style.color = 'white';
@@ -58,7 +60,7 @@ eraser.addEventListener('click', () => {
     currentSize = 50;
 });
 
-// // Switch back to Brush
+// Switch back to Brush
 const switchToBrush = () => {
     isEraser = false;
     activeToolEl.textContent = 'Brush';
@@ -68,6 +70,11 @@ const switchToBrush = () => {
     currentSize = 10;
     brushSlider.value = currentSize;
     displayBrushSize();
+};
+
+// Timer to revert tool label back to brush after showing a temp action.
+const backToBrushSetTimeout = (time_ms) => {
+    setTimeout(switchToBrush, time_ms);
 };
 
 // Create Canvas
@@ -85,7 +92,7 @@ clearCanvasBtn.addEventListener('click', () => {
     drawnArray = [];
     // Active Tool
     activeToolEl.textContent = 'Canvas Cleared';
-    setTimeout(switchToBrush, 1500);
+    backToBrushSetTimeout(BRUSH_TIME);
 });
 
 // // Draw what is stored in DrawnArray
@@ -169,7 +176,7 @@ saveStorageBtn.addEventListener('click', () => {
     localStorage.setItem('savedCanvas', JSON.stringify(drawnArray));
     // Active Tool
     activeToolEl.textContent = 'Canvas Saved';
-    setTimeout(switchToBrush, 1500);
+    backToBrushSetTimeout(BRUSH_TIME);
 });
 
 // Load from Local Storage
@@ -179,10 +186,10 @@ loadStorageBtn.addEventListener('click', () => {
         restoreCanvas();
         // Active Tool
         activeToolEl.textContent = 'Canvas Loaded';
-        setTimeout(switchToBrush, 1500);
+        backToBrushSetTimeout(BRUSH_TIME);
     } else {
         activeToolEl.textContent = 'No Canvas Found!';
-        setTimeout(switchToBrush, 1500);
+        backToBrushSetTimeout(BRUSH_TIME);
     }
 });
 
@@ -191,7 +198,7 @@ clearStorageBtn.addEventListener('click', () => {
     localStorage.removeItem('savedCanvas');
     // Active Tool
     activeToolEl.textContent = 'Local Storage Cleared';
-    setTimeout(switchToBrush, 1500);
+    backToBrushSetTimeout(BRUSH_TIME);
 });
 
 // Download Image
@@ -200,7 +207,7 @@ downloadBtn.addEventListener('click', () => {
     downloadBtn.download = 'paint-example.jpeg';
     // Active Tool
     activeToolEl.textContent = 'Image File Saved';
-    setTimeout(switchToBrush, 1500);
+    backToBrushSetTimeout(BRUSH_TIME);
 });
 
 // // Event Listener
